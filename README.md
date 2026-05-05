@@ -41,7 +41,6 @@ Kueri investigasi mendalam untuk menemukan area bermasalah[cite: 1]:
 * Menghasilkan **Category Return Rate (%)** untuk menemukan anomali produk[cite: 1].
 
 ## 📈 Dashboard Visualization
-*(Tambahkan gambar screenshot dashboard Looker Studio Anda di sini agar rekruter bisa melihat hasil akhirnya)*
 
 ![Dashboard Preview](dashboard_preview/dashboard_screenshot.png)
 

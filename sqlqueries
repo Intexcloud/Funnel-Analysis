@@ -1,0 +1,24 @@
+-- Funnel Summary
+WITH FunnelMetrics AS (
+    SELECT
+        (SELECT COUNT(DISTINCT customer_id) FROM customers) AS total_customers,
+        (SELECT COUNT(DISTINCT customer_id) FROM orders) AS purchasing_customers,
+        (SELECT COUNT(DISTINCT order_id) FROM orders) AS total_orders,
+        (SELECT COUNT(DISTINCT o.order_id)
+         FROM orders o
+         JOIN order_items oi ON o.order_id = oi.order_id
+         JOIN returns r ON oi.order_item_id = r.order_item_id
+        ) AS returned_orders
+)
+SELECT
+    total_customers,
+    purchasing_customers,
+    total_orders,
+    returned_orders,
+	
+    -- Conversion Rate (Purchasing Customers / Total Customers)
+    ROUND((purchasing_customers::NUMERIC / NULLIF(total_customers, 0)) * 100, 2) AS purchase_conversion_rate_pct,
+	
+    --Return Rate (Returned Orders / Total Orders)
+    ROUND((returned_orders::NUMERIC / NULLIF(total_orders, 0)) * 100, 2) AS order_return_rate_pct
+FROM FunnelMetrics;

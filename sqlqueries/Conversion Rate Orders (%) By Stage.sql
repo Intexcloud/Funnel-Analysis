@@ -1,3 +1,4 @@
+--Conversion Rate Orders (%) By Stage
 WITH total AS (
     SELECT COUNT(DISTINCT order_id) AS total_orders FROM orders
 ),

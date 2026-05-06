@@ -44,12 +44,11 @@ Manajemen ingin mengetahui:
 | Stage                  | Count | Conversion Rate |
 |------------------------|-------|-----------------|
 | Total Orders           | 9.000 | 100%            |
-| Delivered              | 5.634 | 62.6%           |
-| Completed (no return)  | 4.458 | 49.5%           |
+| Delivered              | 5.634 | 32.6%           |
+| Completed (no return)  | 4.458 | 19.6%           |
 | Returned               | 1.176 | 13.1%           |
 
 **Insight:**  
-- **37.4% pesanan tidak terkirim** (canceled/in transit) – potensi kendala di operasional atau pembayaran.
 - **13.1% pesanan dikirim mengalami retur** – memerlukan investigasi lebih lanjut pada kualitas produk/deskripsi.
 
 ### 2. Customer Purchase Rate
@@ -80,13 +79,13 @@ Manajemen ingin mengetahui:
 ### 4. Cancel Rate per Payment Method
 | Payment Method     | Cancel Rate |
 |--------------------|-------------|
-| Cash on Delivery   | 35.2%       |
-| Net Banking        | 32.1%       |
-| UPI                | 30.5%       |
-| Loyalty Points     | 28.9%       |
+| Cash on Delivery   | 32.5%       |
+| Net Banking        | 33.3%       |
+| UPI                | 33.8%       |
+| Loyalty Points     | 33.8%       |
 
 **Insight:**  
-- **Cash on Delivery** memiliki cancel rate tertinggi – logis karena tidak ada komitmen finansial di awal.  
+- **Loyal Points & UPI** memiliki cancel rate tertinggi.  
 - Rekomendasi: Berikan insentif (diskon/cashback) untuk metode prabayar guna menurunkan cancel rate.
 
 ### 5. Simulasi A/B Testing

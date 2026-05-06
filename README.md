@@ -1,9 +1,9 @@
 # 🛒 E-Commerce Funnel & Category Performance Analysis
 
 ## 📌 Project Overview
-This project is an end-to-end data analysis for an e-commerce platform, focusing on identifying **revenue leakage** through the evaluation of the **Conversion Funnel** and **Return Rates**.
+This project is an end-to-end data analysis for an e-commerce platform, focusing on identifying **revenue leakage** and **high-value opportunities** through the evaluation of the **Conversion Funnel**, **Return Rates**, and **Average Order Value (AOV)**.
 
-The analysis helps business teams understand the effectiveness of the customer journey—from initial visit to final purchase—while identifying which product categories generate the highest revenue relative to their return rates.
+The analysis helps business teams understand the effectiveness of the customer journey—from initial visit to final purchase—while identifying which product categories generate the highest revenue relative to their return rates and transaction values.
 
 ## 🛠️ Tech Stack
 * **Database:** PostgreSQL (pgAdmin) for data extraction and transformation.
@@ -15,6 +15,14 @@ The analysis helps business teams understand the effectiveness of the customer j
 2. What is the overall order return rate?
 3. Which product categories contribute the most to total revenue?
 4. Which product categories have the highest return rates and require Quality Control (QC) evaluation?
+5. **What is the Average Order Value (AOV) across different product categories?**
+
+## 💡 Key Insights Generated
+Based on the dashboard analysis:
+* **Top Revenue:** Food & Beverages is the leading category in total revenue.
+* **Quality Flag:** Apparel/Fashion has the highest return rate (10.4%).
+* **Funnel Health:** Strong purchase rate (83.2%), with a 16.7% drop-off before checkout.
+* **Top AOV:** Electronics yields the highest transaction value per order.
 
 ## 📁 SQL Queries Breakdown
 
@@ -40,11 +48,16 @@ An in-depth investigative query to pinpoint problematic areas:
 * Comparing total order lines (`total_order_lines`) against returned order lines (`returned_lines`).
 * Generating the **Category Return Rate (%)** to detect product anomalies.
 
+### 4. Average Order Value (AOV) by Category
+This query calculates the average value of transactions across different product categories:
+* Calculating total revenue per category and dividing it by the distinct number of orders.
+* Highlighting "High-Value" categories (like Electronics) that may have lower sales volume but generate the most revenue per transaction.
+
 ## 📈 Dashboard Visualization
 
 ![Dashboard Preview](dashboard_preview/dashboard_screenshot.png)
 
-*This dashboard was built using the metrics derived from the queries above to provide real-time interactive monitoring of category performance and funnel health.*
+*This dashboard was built using the metrics derived from the queries above to provide real-time interactive monitoring of category performance, funnel health, and transaction values.*
 
 ---
 **Author:** Sandy Aprilyanto | Data Analyst

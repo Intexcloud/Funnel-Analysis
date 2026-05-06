@@ -55,7 +55,7 @@ This query calculates the average value of transactions across different product
 
 ## 📈 Dashboard Visualization
 
-![Dashboard Preview](dashboard_preview/dashboard_screenshot.png)
+![Dashboard Preview](dashboard_preview/dashboard_viz.png)
 
 *This dashboard was built using the metrics derived from the queries above to provide real-time interactive monitoring of category performance, funnel health, and transaction values.*
 

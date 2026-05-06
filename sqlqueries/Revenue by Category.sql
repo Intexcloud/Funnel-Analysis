@@ -1,3 +1,4 @@
+--Revenue by Category
 SELECT
     c.category_name,
     SUM(oi.quantity * oi.unit_price) AS total_revenue,

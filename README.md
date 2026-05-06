@@ -1,63 +1,117 @@
-# 🛒 E-Commerce Funnel & Category Performance Analysis
+# 🛒 Ecommerce Funnel Analysis & A/B Testing Simulation
 
-## 📌 Project Overview
-This project is an end-to-end data analysis for an e-commerce platform, focusing on identifying **revenue leakage** and **high-value opportunities** through the evaluation of the **Conversion Funnel**, **Return Rates**, and **Average Order Value (AOV)**.
+Proyek ini melakukan analisis **end‑to‑end funnel** terhadap data transaksi e‑commerce, mengidentifikasi titik bottleneck, dan menyimulasikan **A/B testing** untuk mendemonstrasikan alur kerja eksperimen bisnis.
 
-The analysis helps business teams understand the effectiveness of the customer journey—from initial visit to final purchase—while identifying which product categories generate the highest revenue relative to their return rates and transaction values.
-
-## 🛠️ Tech Stack
-* **Database:** PostgreSQL (pgAdmin) for data extraction and transformation.
-* **Data Visualization:** Looker Studio for interactive dashboard creation.
-* **Language:** SQL (CTEs, JOINs, Aggregations, Subqueries).
-
-## 📊 Key Business Questions Answered
-1. What is the percentage of customers successfully converted into buyers?
-2. What is the overall order return rate?
-3. Which product categories contribute the most to total revenue?
-4. Which product categories have the highest return rates and require Quality Control (QC) evaluation?
-5. **What is the Average Order Value (AOV) across different product categories?**
-
-## 💡 Key Insights Generated
-Based on the dashboard analysis:
-* **Top Revenue:** Food & Beverages is the leading category in total revenue.
-* **Quality Flag:** Apparel/Fashion has the highest return rate (10.4%).
-* **Funnel Health:** Strong purchase rate (83.2%), with a 16.7% drop-off before checkout.
-* **Top AOV:** Electronics yields the highest transaction value per order.
-
-## 📁 SQL Queries Breakdown
-
-The complete SQL code can be found in the `sql_queries/` folder. Below is an explanation of the extracted metrics:
-
-### 1. Funnel Summary & Conversion Rates
-This query utilizes CTEs (`WITH FunnelMetrics`) to calculate key global sales funnel metrics:
-* Retrieving the total number of unique customers (`total_customers`).
-* Counting customers who completed a purchase (`purchasing_customers`).
-* Calculating the total number of orders (`total_orders`).
-* Counting returned orders by performing a **JOIN** between `orders`, `order_items`, and `returns` tables (`returned_orders`).
-* Calculating the **Purchase Conversion Rate (%)** and **Order Return Rate (%)**.
-
-### 2. Category Performance
-This query analyzes sales performance at the product category level:
-* Counting the total quantity of goods sold (`total_items_sold`).
-* Calculating **total revenue** based on unit price and quantity.
-* Ranking results by highest revenue to identify the primary business drivers.
-
-### 3. Return Rate by Category
-An in-depth investigative query to pinpoint problematic areas:
-* Using a `LEFT JOIN` with the `returns` table to calculate the ratio of returned items per category.
-* Comparing total order lines (`total_order_lines`) against returned order lines (`returned_lines`).
-* Generating the **Category Return Rate (%)** to detect product anomalies.
-
-### 4. Average Order Value (AOV) by Category
-This query calculates the average value of transactions across different product categories:
-* Calculating total revenue per category and dividing it by the distinct number of orders.
-* Highlighting "High-Value" categories (like Electronics) that may have lower sales volume but generate the most revenue per transaction.
-
-## 📈 Dashboard Visualization
-
-![Dashboard Preview](dashboard_preview/dashboard_viz.png)
-
-*This dashboard was built using the metrics derived from the queries above to provide real-time interactive monitoring of category performance, funnel health, and transaction values.*
+**Dataset:** 5.000 pelanggan, 9.000 pesanan, 6 kategori produk, 4 metode pembayaran.  
+**Tools:** Python (pandas, matplotlib, seaborn, scipy), SQL, Looker Studio.
 
 ---
-**Author:** Sandy Aprilyanto | Data Analyst
+
+## 📌 Problem Statement
+
+Manajemen ingin mengetahui:
+1. Di tahap mana **drop‑off terbesar** terjadi dalam perjalanan pelanggan?
+2. Kategori produk mana yang memiliki **tingkat retur tertinggi** setelah barang dikirim?
+3. Metode pembayaran apa yang paling banyak menyebabkan **pembatalan pesanan**?
+4. Bagaimana kita bisa mengukur dampak perubahan (misal: desain halaman checkout) secara **statistik** dengan A/B testing?
+
+---
+
+## 📂 Data & Methodology
+
+### Data Sources
+- `customers.csv` – data pelanggan
+- `orders.csv` – data pesanan (status & payment method)
+- `order_items.csv` – detail item dalam setiap pesanan
+- `products.csv` + `categories.csv` – informasi produk & kategori
+- `returns.csv` – data pengembalian barang
+
+### Process
+1. **Data Integration**: Menggabungkan seluruh tabel menggunakan `order_id`, `product_id`, dan `category_id`.
+2. **Data Wrangling**: Membersihkan duplikasi, menambahkan flag `is_returned`, dan membuat dataset ringkasan per order.
+3. **Funnel Analysis**: Menghitung jumlah order di setiap tahap (Total → Delivered → Completed → Returned).
+4. **Root Cause Analysis**:  
+   - Cancel rate per payment method  
+   - Return rate per product category (hanya pesanan *Delivered*)
+5. **Simulated A/B Testing**: Membagi data secara acak menjadi Grup A & B, lalu menguji perbedaan delivery rate menggunakan **Z‑test dua proporsi**.
+6. **Visualization**: Membuat chart untuk setiap insight dan menyusun dashboard interaktif (Looker Studio).
+
+---
+
+## 📊 Key Insights & Findings
+
+### 1. Funnel Konversi Order
+| Stage                  | Count | Conversion Rate |
+|------------------------|-------|-----------------|
+| Total Orders           | 9.000 | 100%            |
+| Delivered              | 5.634 | 62.6%           |
+| Completed (no return)  | 4.458 | 49.5%           |
+| Returned               | 1.176 | 13.1%           |
+
+**Insight:**  
+- **37.4% pesanan tidak terkirim** (canceled/in transit) – potensi kendala di operasional atau pembayaran.
+- **13.1% pesanan dikirim mengalami retur** – memerlukan investigasi lebih lanjut pada kualitas produk/deskripsi.
+
+### 2. Customer Purchase Rate
+- **Total Customers:** 5.000  
+- **Purchasing Customers:** 4.162  
+- **Purchase Rate:** 83.24%  
+- **Drop‑off (tidak membeli):** **16.7%**
+
+**Insight:**  
+16.7% pelanggan terdaftar tidak pernah bertransaksi. Ini bisa diakibatkan oleh pengalaman browsing yang kurang meyakinkan, harga, atau ketersediaan produk.
+
+### 3. Return Rate per Kategori (Delivered Only)
+| Kategori                  | Return Rate |
+|---------------------------|-------------|
+| Beauty/Cosmetics          | 59.23%      |
+| Apparel/Fashion           | 57.99%      |
+| Electronics               | 57.29%      |
+| Toys                      | 55.95%      |
+| Food & Beverages          | 54.50%      |
+| Home & Kitchen Furniture  | 54.17%      |
+
+*Catatan: Return rate yang tinggi menunjukkan data ini bersifat sintetis/tidak realistis untuk bisnis nyata. Dalam konteks portofolio, yang terpenting adalah metodologi perhitungan yang benar.*
+
+**Insight:**  
+- Seluruh kategori memiliki return rate >50%, sehingga tidak ada perbedaan signifikan antar kategori.  
+- Dalam skenario nyata, analis akan menyelidiki penyebab tingginya retur (kualitas produk, ketidaksesuaian deskripsi, atau masalah pengiriman).
+
+### 4. Cancel Rate per Payment Method
+| Payment Method     | Cancel Rate |
+|--------------------|-------------|
+| Cash on Delivery   | 35.2%       |
+| Net Banking        | 32.1%       |
+| UPI                | 30.5%       |
+| Loyalty Points     | 28.9%       |
+
+**Insight:**  
+- **Cash on Delivery** memiliki cancel rate tertinggi – logis karena tidak ada komitmen finansial di awal.  
+- Rekomendasi: Berikan insentif (diskon/cashback) untuk metode prabayar guna menurunkan cancel rate.
+
+### 5. Simulasi A/B Testing
+- Grup A dan B dibentuk secara acak (random assignment).  
+- Hasil Z‑test: p‑value > 0.05 → **tidak ada perbedaan signifikan** pada delivery rate.  
+- **Kesimpulan:** Ini adalah hasil yang diharapkan karena tidak ada perlakuan khusus. Dalam eksperimen nyata, perusahaan dapat menguji perubahan (misal: desain checkout baru) dengan kerangka kerja yang sama.
+
+---
+
+## 🛠️ Tech Stack & Highlights
+
+- **Python (pandas):** Data integration & wrangling
+- **SQL:** Validasi return rate per kategori (CTE + LEFT JOIN)
+- **scipy.stats:** Z‑test dua proporsi
+- **matplotlib/seaborn:** Visualisasi funnel, cancel rate, return rate
+- **Looker Studio:** Dashboard interaktif
+
+*Catatan: Label di dashboard sebelumnya sempat tertukar (“Overall Return Rate 83,24%” seharusnya “Customer Purchase Rate”). Di proyek ini, semua label telah dikoreksi.*
+
+---
+
+## 🚀 Cara Menjalankan
+
+1. Clone repo ini.
+2. Pastikan file CSV berada di folder yang sama.
+3. Jalankan script Python:
+   ```bash
+   python funnel_analysis.py

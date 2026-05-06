@@ -1,3 +1,4 @@
+-- Average Order Value by Category
 SELECT
     c.category_name,
     ROUND(AVG(order_total), 2) AS aov
